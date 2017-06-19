@@ -109,7 +109,7 @@ if(name != ""){
     console.log(childSnapshot.val().frequency);
   });
  
-   $("#table_id").append("<thead><tr><th>" + name + "</th><th>" + destination + "</th><th>" + frequency +  "</th><th>" + nextTrainDisplay + "</th><th>" +  minutesTillTrain + "</th><th>" + buttonMarkup + "</th></tr></thead>");
+   // $("#table_id").append("<thead><tr><th>" + name + "</th><th>" + destination + "</th><th>" + frequency +  "</th><th>" + nextTrainDisplay + "</th><th>" +  minutesTillTrain + "</th><th>" + buttonMarkup + "</th></tr></thead>");
   
 
   database.ref().orderByChild("dateAdded").limitToLast(1).on("child_added", function(lastEmpSnapshot){
@@ -128,7 +128,16 @@ else{
 // do nothing
 }
 $("#remove_id").click(function(){
-    $(this).parents("tr").remove();
+    var rootRef = new FireBase('https://employee-data-7e3a7.firebaseio.com/');
+    rootRef.once('value', function(snapshot){
+       var children = snapshot.val();
+       console.log(children);
+       for(var child_id in children) {
+            // Create a reference to it
+            var child = rootRef.child(child_id);
+            child.remove();
+       }
+    });
   });
 
 });
